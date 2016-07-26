@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<character name="Eskil">
+
+<option>
+	<name>opt1</name>
+	<value>1</value>
+</option>
+<option>
+	<name>opt2</name>
+	<value>0</value>
+</option>
+
+</character>

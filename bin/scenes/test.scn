@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<scene name="Prolog" id="1">
+	<description>
+		Jest piękny majowy poranek, słońce wychodzi zza chmurki, morze odpoczywa po nocnym sztormie.
+		Budzisz się na kamienistej plaży, napierdala cię głowa. Wokół tundra w chuj, pieski i liski.
+	</description>
+
+	<characterList>
+		<char name="Skadi">
+			<!-- To jest przykładowy komentarz XML. Tutaj można pisać cokolwiek
+			uznamy za słuszne i pomocne przy tworzeniu i rozwijaniu gry.
+			W odróżnieniu od tagów description, ten komentarz będzie zignorowany
+			przez każdy program parsujący, więc jest "tylko dla nas". -->
+			<option name="positionX">10</option>
+			<option name="positionY">20</option>
+			<option name="mood">indifferent</option>
+		</char>
+		<char name="Eskil">
+			<option name="isDead">1</option>
+		</char>
+		<!-- Postaci może być dowolnie wiele. Każda postać, która może się
+		pojawić w tej scenie, musi być wyszczególniona w tej sekcji, aby 
+		podczas parsowania sceny program pobrał odpowiednie pliki postaci. -->
+	</characterList>
+
+	<localVars>
+		<var name="var1">0</var>
+		<var name="var2">1</var>
+		<var name="var3">a larch</var>
+	</localVars>
+
+	<module id="1">
+		<description></description>
+		<eventList>
+			<!-- W ramach każdego modułu wydarzenia sa realizowane po kolei. -->
+			<event type="ANIMATION">
+				<description>
+					Nad sobą dostrzegasz cycki. Wychudzona dziewczyna, ubrana w szmaty z mysich skórek i zabiedzona jak syberyjski rumun, pochyla się nad tobą.
+				</description>
+				<parameter type="name">cycki</parameter>
+			</event>
+			<event type="STATEMENT">
+			<!-- Opis możliwych typów zdarzeń zawarty jest
+			w osobnym pliku w dokumentacji. -->
+				<description>
+					Skadi zwraca się do Ciebie.
+				</description>
+				<condition>
+					<name>var1</name>
+					<value>0</value>
+				</condition>
+				<!-- Dowolnie wiele warunków dla każdego zdarzenia. -->
+				<parameter type="character">Skadi</parameter>
+				<parameter type="value">
+					Coś tu mówię do ciebie, kolego <?var playerName ?>.
+				</parameter>
+			</event>
+			
+			<event type="GLOBAL_VARIABLE_CHANGE">
+				<description>
+					Tak oto poznałe/aś Skadi. To miła dziewczyna.
+				</description>
+				<condition>
+					<name>var1</name>
+					<value>0</value>
+				</condition>
+				<parameter type="name">met_skadi</parameter>
+				<parameter type="value">1</parameter>
+			</event>
+			
+		</eventList>
+		
+		<alternative>
+			<head>
+				No i co na to powiesz?
+			</head>
+			<choice>
+				<name>
+					Powiedz: Ty stara kurwo, zmarnowałaś mi dziesięć lat życia.
+				</name>
+				<offshoot type="GLOBAL_VARIABLE_CHANGE">
+					<condition>
+						<name>var1</name>
+						<value>0</value>
+					</condition>
+					<name>slept_with_skadi</name>
+					<value>0</value>
+				</offshoot>
+				<offshoot type="GOTO_MODULE">
+					<moduleNo>3</moduleNo>
+				</offshoot>
+				<!-- Każdy wybór może mieć dowolną liczbę konsekwencji.
+				Mogą to być np. modyfikacje zmiennych, lokalnych bądź globalnych.
+				Ostatnią (i jedyną obowiązkową) konsekwencją wyboru jest
+				przejście do następnego modułu (GOTO_MODULE). -->
+			</choice>
+			<choice>
+				<name>
+					Ruchaj Skadi.
+				</name>
+				<offshoot type="GLOBAL_VARIABLE_CHANGE">
+					<condition>
+						<name>var1</name>
+						<value>0</value>
+					</condition>
+					<name>slept_with_skadi</name>
+					<value>1</value>
+				</offshoot>
+				<offshoot type="GOTO_MODULE">
+					<moduleNo>2</moduleNo>
+				</offshoot>
+			</choice>
+		</alternative>
+	</module>
+	
+	<finalModule id="2">
+	<!-- Moduł końcowy może zawierać dowolną liczbę zdarzeń, w szczególności
+	w rodzaju animacji lub innej formy przejści do kolejnej sceny.
+	W odróżnieniu od zwykłego modułu nie kończy się jednak listą 
+	możliwych decyzji gracza, ale przebiega w sposób liniowy, uwarunkowany
+	(co najwyżej) zapisanymi wcześniej zmiennymi.
+	Ma stanowić coś w stylu epilogu sceny i jego głównym zadaniem jest 
+	przekierowanie gry do sceny kolejnej. -->
+		<description>
+			Wybrałeś wyruchanie Skadi, doskonale.
+		</description>
+		<eventList>
+			<event type="ANIMATION">
+				<description>
+					Ruchasz Skadi aż wszy lecą z kożucha.
+				</description>
+				<parameter type="name">ruchanie</parameter>
+			</event>			
+			<event type="CHARACTER_STATE">
+				<description>
+					Skadi zmienia swój nastrój na: horny.
+				</description>
+				<parameter type="character">Skadi</parameter>
+				<parameter type="name">mood</parameter>
+				<parameter type="value">horny</parameter>
+			</event>
+			<event type="STATEMENT">
+				<description>Skadi rzecze:</description>
+				<parameter type="character">Skadi</parameter>
+				<parameter type="value">
+					Bąmp po wincyj xD
+				</parameter>
+			</event>
+		</eventList>
+		<offshoot type="GOTO_SCENE">
+			<sceneNo>2</sceneNo> 
+			<moduleNo>1</moduleNo>
+		</offshoot>
+	</finalModule>
+
+	<finalModule id="3">
+		<description>Wybrałeś bycie pedałem.</description>
+		<eventList>
+			<event type="ANIMATION">
+				<description>
+					Skadi nie jest zachwycona twoją postawą, wolałaby się poruchać.
+				</description>
+				<parameter type="name">niezachwyt</parameter>
+			</event>
+			<event type="CHARACTER_STATE">
+				<description></description>
+				<parameter type="character">Skadi</parameter>
+				<parameter type="name">mood</parameter>
+				<parameter type="value">disappointed</parameter>
+			</event>
+			<event type="STATEMENT">
+				<description>Skadi rzecze:</description>
+				<parameter type="character">Skadi</parameter>
+				<parameter type="value">No cho ruchacz tygrysie xD</parameter>
+			</event>
+			<event type="NARRATION">
+				<description></description>
+				<parameter type="value">
+					Niestety, twoja okazja przepadła, chuj.
+				</parameter>
+			</event>
+		</eventList>
+		<offshoot type="GOTO_SCENE">
+			<sceneNo>2</sceneNo>
+			<moduleNo>2</moduleNo>
+		</offshoot>
+	</finalModule>
+	
+	<!-- Modułów oraz modułów końcowych może być w kazdej scenie dowolnie wiele. -->
+	
+</scene>
+	
+	
